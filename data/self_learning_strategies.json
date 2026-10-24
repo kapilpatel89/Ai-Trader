@@ -1,0 +1,165 @@
+{
+  "total_mistakes_avoided": 0,
+  "total_adaptation_cycles": 1,
+  "learned_mistake_rules": [
+    {
+      "id": "mistake_prior_1",
+      "pattern": "OVERBOUGHT_GREED_TRAP",
+      "condition": "RSI > 72 on Long Entry",
+      "trigger_criteria": {
+        "side": "LONG",
+        "min_rsi": 72.0
+      },
+      "reason": "Buying into RSI overbought exhaustion (>72) frequently triggers sharp pullbacks.",
+      "action": "REJECT_LONG",
+      "times_prevented": 0,
+      "learned_from": "Institutional Risk Framework"
+    },
+    {
+      "id": "mistake_prior_2",
+      "pattern": "OVERSOLD_PANIC_SHORT",
+      "condition": "RSI < 26 on Short Entry",
+      "trigger_criteria": {
+        "side": "SHORT",
+        "max_rsi": 26.0
+      },
+      "reason": "Shorting into oversold panic (<26) risks getting trapped by sudden short squeezes.",
+      "action": "REJECT_SHORT",
+      "times_prevented": 29,
+      "learned_from": "Institutional Risk Framework"
+    },
+    {
+      "id": "mistake_prior_3",
+      "pattern": "OPPOSING_WHALE_WALL_HEADWIND",
+      "condition": "Orderbook Imbalance < -22% on Long",
+      "trigger_criteria": {
+        "side": "LONG",
+        "max_imbalance": -22.0
+      },
+      "reason": "Entering LONG directly into dense overhead sell walls fails due to lack of buyer absorption.",
+      "action": "REJECT_LONG",
+      "times_prevented": 0,
+      "learned_from": "Orderbook Microstructure Analysis"
+    },
+    {
+      "id": "mistake_prior_4",
+      "pattern": "OPPOSING_BID_WALL_SUPPORT",
+      "condition": "Orderbook Imbalance > +22% on Short",
+      "trigger_criteria": {
+        "side": "SHORT",
+        "min_imbalance": 22.0
+      },
+      "reason": "Shorting directly into concentrated bid support walls fails when whales absorb market sells.",
+      "action": "REJECT_SHORT",
+      "times_prevented": 0,
+      "learned_from": "Orderbook Microstructure Analysis"
+    }
+  ],
+  "winning_patterns": [
+    {
+      "timestamp": 1792854610.3564317,
+      "symbol": "B-ZEC_USDT",
+      "side": "SHORT",
+      "profit_inr": 855.54,
+      "pnl_pct": 0.75,
+      "exit_reason": "STOP_LOSS_TRIGGERED",
+      "strategy": "Breakdown Delta Short"
+    }
+  ],
+  "self_improved_strategies": {
+    "DELTA_MOMENTUM_SURGE": {
+      "id": "strat_delta_momentum",
+      "name": "Delta Momentum Surge",
+      "description": "Exploits high 24h momentum movers with aggressive orderbook delta buying pressure.",
+      "regime": "MOMENTUM_TREND",
+      "min_score": 35,
+      "preferred_side": "LONG",
+      "required_delta_bias": [
+        "BULLISH_DELTA",
+        "AGGRESSIVE_BUY_PRESSURE"
+      ],
+      "target_rr": 2.0,
+      "trailing_sl_offset_pct": 1.2,
+      "leverage": 5,
+      "trades_count": 0,
+      "win_count": 0,
+      "loss_count": 0,
+      "win_rate": 75.0,
+      "total_profit_inr": 0.0,
+      "adaptation_level": 1,
+      "last_adapted": 1792774114.693717,
+      "adaptation_notes": "Initialized with baseline institutional parameters."
+    },
+    "MICROSTRUCTURE_WALL_ABSORPTION": {
+      "id": "strat_wall_absorption",
+      "name": "Microstructure Wall Absorption",
+      "description": "Fades extreme orderbook imbalance or enters with dominant whale wall defense.",
+      "regime": "ORDERBOOK_DEPTH",
+      "min_score": 40,
+      "preferred_side": "ANY",
+      "min_imbalance_pct": 20.0,
+      "target_rr": 2.2,
+      "trailing_sl_offset_pct": 1.0,
+      "leverage": 5,
+      "trades_count": 0,
+      "win_count": 0,
+      "loss_count": 0,
+      "win_rate": 70.0,
+      "total_profit_inr": 0.0,
+      "adaptation_level": 1,
+      "last_adapted": 1792774114.693717,
+      "adaptation_notes": "Initialized with strict orderbook wall absorption criteria."
+    },
+    "OVERSOLD_REVERSAL_FLOW": {
+      "id": "strat_oversold_reversal",
+      "name": "Oversold Flow Reversal",
+      "description": "Catches bottom exhaustion when RSI is oversold and top-5 microstructure delta turns positive.",
+      "regime": "MEAN_REVERSION",
+      "min_score": 30,
+      "preferred_side": "LONG",
+      "max_rsi": 38.0,
+      "target_rr": 2.5,
+      "trailing_sl_offset_pct": 1.1,
+      "leverage": 4,
+      "trades_count": 0,
+      "win_count": 0,
+      "loss_count": 0,
+      "win_rate": 68.0,
+      "total_profit_inr": 0.0,
+      "adaptation_level": 1,
+      "last_adapted": 1792774114.693717,
+      "adaptation_notes": "Initialized for oversold bounce trading."
+    },
+    "BREAKDOWN_DELTA_SHORT": {
+      "id": "strat_breakdown_short",
+      "name": "Breakdown Delta Short",
+      "description": "Enters high-volume short positions when top gainers exhaust and sell delta surges.",
+      "regime": "BEARISH_EXHAUSTION",
+      "min_score": -35,
+      "preferred_side": "SHORT",
+      "required_delta_bias": [
+        "BEARISH_DELTA",
+        "AGGRESSIVE_SELL_PRESSURE"
+      ],
+      "target_rr": 2.05,
+      "trailing_sl_offset_pct": 1.2,
+      "leverage": 5,
+      "trades_count": 1,
+      "win_count": 1,
+      "loss_count": 0,
+      "win_rate": 100.0,
+      "total_profit_inr": 855.54,
+      "adaptation_level": 2,
+      "last_adapted": 1792854610.3564317,
+      "adaptation_notes": "Self-adapted strategy 'Breakdown Delta Short': Expanded target R:R to 2.05x based on 100.0% win rate."
+    }
+  },
+  "strategy_evolution_logs": [
+    {
+      "timestamp": 1792854610.3564317,
+      "type": "WIN_REINFORCED",
+      "message": "Winning pattern on B-ZEC_USDT SHORT (+\u20b9855.54 via STOP_LOSS_TRIGGERED). Self-adapted strategy 'Breakdown Delta Short': Expanded target R:R to 2.05x based on 100.0% win rate.",
+      "profit_inr": 855.54
+    }
+  ]
+}

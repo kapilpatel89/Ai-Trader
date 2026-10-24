@@ -1,0 +1,49 @@
+# ==========================================================
+# Large AI Models & Acceleration Binaries (DO NOT UPLOAD)
+# Automatically downloaded via python download_llm.py
+# ==========================================================
+models/
+*.gguf
+*.bin
+*.pt
+*.onnx
+*.safetensors
+llama_bin/
+llama-server.exe
+*.dll
+
+# ==========================================================
+# Private Credentials & Live API Keys
+# Use data/config.example.json as reference template
+# ==========================================================
+data/config.json
+*.env
+.env.*
+
+# ==========================================================
+# Python Bytecode & Runtime Caches
+# ==========================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==========================================================
+# Logs & Temporary Scratch
+# ==========================================================
+logs/
+*.log
+.tempmediaStorage/
+scratch/
+
+# ==========================================================
+# OS & IDE Files
+# ==========================================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,12 @@
+{
+  "coindcx_key": "YOUR_COINDCX_API_KEY",
+  "coindcx_secret": "YOUR_COINDCX_SECRET_KEY",
+  "live_trading_enabled": false,
+  "default_leverage": 5,
+  "selected_model": "qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "telegram_bot_token": "YOUR_TELEGRAM_BOT_TOKEN",
+  "telegram_chat_id": "YOUR_TELEGRAM_CHAT_ID",
+  "telegram_enabled": false,
+  "telegram_signals_enabled": false,
+  "telegram_trades_enabled": false
+}

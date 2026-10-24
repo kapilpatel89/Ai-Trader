@@ -1,0 +1,682 @@
+{
+  "config": {
+    "enabled": true,
+    "min_score": 45,
+    "max_open_positions": 3,
+    "leverage": 5,
+    "position_size_inr": 25000.0,
+    "position_size_usd": 300.0,
+    "risk_pct_per_trade": 5.0,
+    "scan_interval_sec": 20,
+    "risk_reward_min": 1.8,
+    "live_trading_enabled": false
+  },
+  "memory": {
+    "total_mistakes_avoided": 0,
+    "learned_lessons": [
+      {
+        "id": "lesson_1792504480",
+        "symbol": "B-TAO_USDT",
+        "side": "SHORT",
+        "timestamp": 1792504480.9262838,
+        "cooldown_sec": 1800,
+        "condition": "Failure on B-TAO_USDT SHORT exit via STOP_LOSS_TRIGGERED",
+        "reason": "Loss on B-TAO_USDT SHORT (STOP_LOSS_TRIGGERED). Trade invalidation triggered after 3172s.",
+        "action": "REJECT_SHORT",
+        "learned_from": "Realized Loss of $18.00"
+      },
+      {
+        "id": "lesson_1792493906",
+        "symbol": "B-ZEC_USDT",
+        "side": "SHORT",
+        "timestamp": 1792493906.8373024,
+        "cooldown_sec": 1800,
+        "condition": "Failure on B-ZEC_USDT SHORT exit via STOP_LOSS_TRIGGERED",
+        "reason": "Loss on B-ZEC_USDT SHORT (STOP_LOSS_TRIGGERED). Trade invalidation triggered after 4335s.",
+        "action": "REJECT_SHORT",
+        "learned_from": "Realized Loss of $18.00"
+      },
+      {
+        "id": "rule_1",
+        "condition": "RSI > 70 Long Entry",
+        "reason": "Overbought exhaustion. High probability of pullback.",
+        "action": "REJECT_LONG",
+        "learned_from": "Initial Market Prior"
+      },
+      {
+        "id": "rule_2",
+        "condition": "RSI < 28 Short Entry",
+        "reason": "Oversold bounce risk. Sellers exhausted.",
+        "action": "REJECT_SHORT",
+        "learned_from": "Initial Market Prior"
+      },
+      {
+        "id": "rule_3",
+        "condition": "Order Book Imbalance < -20% on Long",
+        "reason": "Heavy sell walls overhead; buyers lacked orderbook absorption.",
+        "action": "REJECT_LONG",
+        "learned_from": "Order Book Microstructure Analysis"
+      }
+    ],
+    "profitable_patterns": [],
+    "agent_activity_logs": [
+      {
+        "timestamp": 1792860688.4571862,
+        "time_str": "22:21:28",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ETH_USDT @ $2313.6800 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -55/100, SL: $2323.3975, TP: $2294.2451]",
+        "meta": {
+          "pair": "B-ETH_USDT",
+          "side": "SHORT",
+          "price": 2313.68,
+          "qty": 0.7521,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792860647.3950505,
+        "time_str": "22:20:47",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ETH_USDT @ $2315.6300 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -70/100, SL: $2325.3556, TP: $2296.1787]",
+        "meta": {
+          "pair": "B-ETH_USDT",
+          "side": "SHORT",
+          "price": 2315.63,
+          "qty": 0.7513,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792860606.2792344,
+        "time_str": "22:20:06",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-BTC_USDT @ $80096.9600 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $80364.1954, TP: $79562.4891]",
+        "meta": {
+          "pair": "B-BTC_USDT",
+          "side": "SHORT",
+          "price": 80096.96,
+          "qty": 0.0217,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792860501.979354,
+        "time_str": "22:18:21",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-BNB_USDT @ $722.2000 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -75/100, SL: $724.3994, TP: $717.8011]",
+        "meta": {
+          "pair": "B-BNB_USDT",
+          "side": "SHORT",
+          "price": 722.2,
+          "qty": 2.408,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792860296.9467049,
+        "time_str": "22:14:56",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ZEC_USDT @ $1147.9100 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $1152.7312, TP: $1138.2676]",
+        "meta": {
+          "pair": "B-ZEC_USDT",
+          "side": "SHORT",
+          "price": 1147.91,
+          "qty": 1.5162,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792860234.0320385,
+        "time_str": "22:13:54",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-NEAR_USDT @ $4.4090 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $4.4275, TP: $4.372]",
+        "meta": {
+          "pair": "B-NEAR_USDT",
+          "side": "SHORT",
+          "price": 4.409,
+          "qty": 394.4305,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792859821.9678926,
+        "time_str": "22:07:01",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-BTC_USDT @ $79712.4200 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -45/100, SL: $79961.0389, TP: $79215.1822]",
+        "meta": {
+          "pair": "B-BTC_USDT",
+          "side": "SHORT",
+          "price": 79712.42,
+          "qty": 0.0218,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792859556.7933538,
+        "time_str": "22:02:36",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-LTC_USDT @ $55.4500 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -55/100, SL: $55.6829, TP: $54.9842]",
+        "meta": {
+          "pair": "B-LTC_USDT",
+          "side": "SHORT",
+          "price": 55.45,
+          "qty": 31.4186,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792859472.2019043,
+        "time_str": "22:01:12",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-SOL_USDT @ $99.6200 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -55/100, SL: $100.0384, TP: $98.7832]",
+        "meta": {
+          "pair": "B-SOL_USDT",
+          "side": "SHORT",
+          "price": 99.62,
+          "qty": 17.4881,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792859367.856577,
+        "time_str": "21:59:27",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-NEAR_USDT @ $4.3830 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $4.4014, TP: $4.3462]",
+        "meta": {
+          "pair": "B-NEAR_USDT",
+          "side": "SHORT",
+          "price": 4.383,
+          "qty": 396.7703,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792859264.0014167,
+        "time_str": "21:57:44",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ZEC_USDT @ $1138.2500 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -70/100, SL: $1143.0306, TP: $1128.6887]",
+        "meta": {
+          "pair": "B-ZEC_USDT",
+          "side": "SHORT",
+          "price": 1138.25,
+          "qty": 1.528,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792859160.6427915,
+        "time_str": "21:56:00",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-NEAR_USDT @ $4.3790 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -65/100, SL: $4.3974, TP: $4.3422]",
+        "meta": {
+          "pair": "B-NEAR_USDT",
+          "side": "SHORT",
+          "price": 4.379,
+          "qty": 397.8047,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792859098.5260706,
+        "time_str": "21:54:58",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-QNT_USDT @ $174.9000 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -70/100, SL: $175.6346, TP: $173.4308]",
+        "meta": {
+          "pair": "B-QNT_USDT",
+          "side": "SHORT",
+          "price": 174.9,
+          "qty": 9.9639,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792859076.8988085,
+        "time_str": "21:54:36",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ZEC_USDT @ $1140.2300 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -85/100, SL: $1145.019, TP: $1130.6521]",
+        "meta": {
+          "pair": "B-ZEC_USDT",
+          "side": "SHORT",
+          "price": 1140.23,
+          "qty": 1.5262,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792858973.4939241,
+        "time_str": "21:52:53",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-NEAR_USDT @ $4.3900 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -65/100, SL: $4.4084, TP: $4.3531]",
+        "meta": {
+          "pair": "B-NEAR_USDT",
+          "side": "SHORT",
+          "price": 4.39,
+          "qty": 396.177,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792858950.0561798,
+        "time_str": "21:52:30",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-QNT_USDT @ $175.3800 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $176.1166, TP: $173.9068]",
+        "meta": {
+          "pair": "B-QNT_USDT",
+          "side": "SHORT",
+          "price": 175.38,
+          "qty": 9.9159,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792858927.7278552,
+        "time_str": "21:52:07",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-NEAR_USDT @ $4.4000 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $4.4185, TP: $4.363]",
+        "meta": {
+          "pair": "B-NEAR_USDT",
+          "side": "SHORT",
+          "price": 4.4,
+          "qty": 395.2373,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792858904.2553437,
+        "time_str": "21:51:44",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-SOL_USDT @ $99.7200 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $100.1388, TP: $98.8824]",
+        "meta": {
+          "pair": "B-SOL_USDT",
+          "side": "SHORT",
+          "price": 99.72,
+          "qty": 17.4636,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792858882.4168673,
+        "time_str": "21:51:22",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-SOL_USDT @ $99.8500 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $100.2694, TP: $99.0113]",
+        "meta": {
+          "pair": "B-SOL_USDT",
+          "side": "SHORT",
+          "price": 99.85,
+          "qty": 17.4478,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792858860.4423938,
+        "time_str": "21:51:00",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-PAXG_USDT @ $3995.9000 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $4007.8877, TP: $3971.9246]",
+        "meta": {
+          "pair": "B-PAXG_USDT",
+          "side": "SHORT",
+          "price": 3995.9,
+          "qty": 0.4358,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792858839.3615663,
+        "time_str": "21:50:39",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-QNT_USDT @ $176.2000 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -85/100, SL: $176.94, TP: $174.7199]",
+        "meta": {
+          "pair": "B-QNT_USDT",
+          "side": "SHORT",
+          "price": 176.2,
+          "qty": 9.8766,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792858817.7930765,
+        "time_str": "21:50:17",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-BTC_USDT @ $79711.9800 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -60/100, SL: $79952.1166, TP: $79231.7069]",
+        "meta": {
+          "pair": "B-BTC_USDT",
+          "side": "SHORT",
+          "price": 79711.98,
+          "qty": 0.0218,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792858752.4076326,
+        "time_str": "21:49:12",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-LTC_USDT @ $55.7200 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $55.954, TP: $55.252]",
+        "meta": {
+          "pair": "B-LTC_USDT",
+          "side": "SHORT",
+          "price": 55.72,
+          "qty": 31.2446,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792858688.0589876,
+        "time_str": "21:48:08",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-LTC_USDT @ $55.8000 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $56.0344, TP: $55.3313]",
+        "meta": {
+          "pair": "B-LTC_USDT",
+          "side": "SHORT",
+          "price": 55.8,
+          "qty": 31.1688,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792858502.9190295,
+        "time_str": "21:45:02",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-LTC_USDT @ $55.8500 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $56.0846, TP: $55.3809]",
+        "meta": {
+          "pair": "B-LTC_USDT",
+          "side": "SHORT",
+          "price": 55.85,
+          "qty": 31.1099,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792858480.328575,
+        "time_str": "21:44:40",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-SOL_USDT @ $100.0700 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -55/100, SL: $100.4903, TP: $99.2294]",
+        "meta": {
+          "pair": "B-SOL_USDT",
+          "side": "SHORT",
+          "price": 100.07,
+          "qty": 17.3421,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792858367.963749,
+        "time_str": "21:42:47",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-LTC_USDT @ $55.8700 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $56.1047, TP: $55.4007]",
+        "meta": {
+          "pair": "B-LTC_USDT",
+          "side": "SHORT",
+          "price": 55.87,
+          "qty": 31.0126,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792858323.419452,
+        "time_str": "21:42:03",
+        "type": "ENTRY",
+        "message": "Opened LONG on B-BNB_USDT @ $722.0300 [Strategy: Delta Momentum Surge, Compounded Margin: \u20b935,000, Lev 5x, Score 45/100, SL: $719.8639, TP: $726.3622]",
+        "meta": {
+          "pair": "B-BNB_USDT",
+          "side": "LONG",
+          "price": 722.03,
+          "qty": 2.4031,
+          "margin_inr": 35000.0,
+          "strategy": "Delta Momentum Surge"
+        }
+      },
+      {
+        "timestamp": 1792857954.9163597,
+        "time_str": "21:35:54",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-BTC_USDT @ $79768.8300 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -45/100, SL: $80008.1365, TP: $79290.217]",
+        "meta": {
+          "pair": "B-BTC_USDT",
+          "side": "SHORT",
+          "price": 79768.83,
+          "qty": 0.0217,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857914.1125894,
+        "time_str": "21:35:14",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-QNT_USDT @ $176.4300 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -85/100, SL: $177.171, TP: $174.948]",
+        "meta": {
+          "pair": "B-QNT_USDT",
+          "side": "SHORT",
+          "price": 176.43,
+          "qty": 9.8081,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857870.1861138,
+        "time_str": "21:34:30",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ZEC_USDT @ $1142.8800 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -85/100, SL: $1147.6801, TP: $1133.2798]",
+        "meta": {
+          "pair": "B-ZEC_USDT",
+          "side": "SHORT",
+          "price": 1142.88,
+          "qty": 1.5146,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857829.1348324,
+        "time_str": "21:33:49",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-QNT_USDT @ $176.7400 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -85/100, SL: $177.4823, TP: $175.2554]",
+        "meta": {
+          "pair": "B-QNT_USDT",
+          "side": "SHORT",
+          "price": 176.74,
+          "qty": 9.8035,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857805.6368291,
+        "time_str": "21:33:25",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ZEC_USDT @ $1144.0100 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -85/100, SL: $1148.8148, TP: $1134.4003]",
+        "meta": {
+          "pair": "B-ZEC_USDT",
+          "side": "SHORT",
+          "price": 1144.01,
+          "qty": 1.5146,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857785.052601,
+        "time_str": "21:33:05",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ZEC_USDT @ $1145.9500 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -65/100, SL: $1150.763, TP: $1136.324]",
+        "meta": {
+          "pair": "B-ZEC_USDT",
+          "side": "SHORT",
+          "price": 1145.95,
+          "qty": 1.512,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857764.3419368,
+        "time_str": "21:32:44",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ZEC_USDT @ $1146.5700 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -45/100, SL: $1151.3856, TP: $1136.9388]",
+        "meta": {
+          "pair": "B-ZEC_USDT",
+          "side": "SHORT",
+          "price": 1146.57,
+          "qty": 1.5131,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857743.765004,
+        "time_str": "21:32:23",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ZEC_USDT @ $1147.0900 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -45/100, SL: $1151.9078, TP: $1137.4544]",
+        "meta": {
+          "pair": "B-ZEC_USDT",
+          "side": "SHORT",
+          "price": 1147.09,
+          "qty": 1.513,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792857723.1753633,
+        "time_str": "21:32:03",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-SOL_USDT @ $99.7600 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -55/100, SL: $100.179, TP: $98.922]",
+        "meta": {
+          "pair": "B-SOL_USDT",
+          "side": "SHORT",
+          "price": 99.76,
+          "qty": 17.4012,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857702.1724842,
+        "time_str": "21:31:42",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-QNT_USDT @ $177.1200 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -55/100, SL: $177.8639, TP: $175.6322]",
+        "meta": {
+          "pair": "B-QNT_USDT",
+          "side": "SHORT",
+          "price": 177.12,
+          "qty": 9.8048,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857636.3921015,
+        "time_str": "21:30:36",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-BTC_USDT @ $79781.8500 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -45/100, SL: $80021.1956, TP: $79303.1589]",
+        "meta": {
+          "pair": "B-BTC_USDT",
+          "side": "SHORT",
+          "price": 79781.85,
+          "qty": 0.0217,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857593.3920465,
+        "time_str": "21:29:53",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-BTC_USDT @ $79827.7800 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -60/100, SL: $80067.2633, TP: $79348.8133]",
+        "meta": {
+          "pair": "B-BTC_USDT",
+          "side": "SHORT",
+          "price": 79827.78,
+          "qty": 0.0217,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857400.381766,
+        "time_str": "21:26:40",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-LTC_USDT @ $55.6400 [Strategy: Microstructure Wall Absorption, Compounded Margin: \u20b935,000, Lev 5x, Score -50/100, SL: $55.8737, TP: $55.1726]",
+        "meta": {
+          "pair": "B-LTC_USDT",
+          "side": "SHORT",
+          "price": 55.64,
+          "qty": 31.0731,
+          "margin_inr": 35000.0,
+          "strategy": "Microstructure Wall Absorption"
+        }
+      },
+      {
+        "timestamp": 1792857347.95274,
+        "time_str": "21:25:47",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-QNT_USDT @ $176.0000 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -45/100, SL: $176.7392, TP: $174.5216]",
+        "meta": {
+          "pair": "B-QNT_USDT",
+          "side": "SHORT",
+          "price": 176.0,
+          "qty": 9.8253,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857296.869576,
+        "time_str": "21:24:56",
+        "type": "ENTRY",
+        "message": "Opened SHORT on B-ZEC_USDT @ $1141.5100 [Strategy: Breakdown Delta Short, Compounded Margin: \u20b935,000, Lev 5x, Score -85/100, SL: $1146.3043, TP: $1131.9213]",
+        "meta": {
+          "pair": "B-ZEC_USDT",
+          "side": "SHORT",
+          "price": 1141.51,
+          "qty": 1.5149,
+          "margin_inr": 35000.0,
+          "strategy": "Breakdown Delta Short"
+        }
+      },
+      {
+        "timestamp": 1792857295.5329597,
+        "time_str": "21:24:55",
+        "type": "SYSTEM",
+        "message": "Auto-Pilot Trading Enabled",
+        "meta": {}
+      },
+      {
+        "timestamp": 1792857122.8631468,
+        "time_str": "21:22:02",
+        "type": "SYSTEM",
+        "message": "AutoTrader Stats and History Reset to 0",
+        "meta": {}
+      }
+    ],
+    "last_scan_time": 1792860687.8177638
+  }
+}

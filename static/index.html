@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoinDCX AI Institutional Futures Terminal</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="stylesheet" href="/static/css/terminal.css?v=17">
+  <!-- TradingView Lightweight Charts (Local zero-latency) -->
+  <script src="/static/js/lightweight-charts.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="brand">
+      <div class="brand-logo">⚡</div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="brand-title">CoinDCX AI Terminal</span>
+          <span class="brand-badge">Institutional</span>
+        </div>
+        <div style="font-size:10px;color:var(--text-dim);font-family:var(--font-mono)">Derivatives & Quantitative Agent</div>
+      </div>
+    </div>
+
+    <!-- Live Account Metric Tickers -->
+    <div class="nav-stats">
+      <div class="stat-item">
+        <span class="stat-label">Portfolio Equity</span>
+        <span class="stat-value" id="nav_equity_val">₹10,00,000.00</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Total PnL</span>
+        <span class="stat-value up" id="nav_pnl_val">+0.00%</span>
+      </div>
+      <div class="stat-item" id="nav_user_profile_item" style="display:none;">
+        <span class="stat-label">CoinDCX User</span>
+        <span class="stat-value" id="nav_username_val" style="color:var(--neon-cyan)">--</span>
+      </div>
+      <div class="stat-item" id="nav_inr_wallet_item" style="display:none;" title="CoinDCX Derivatives Futures Wallet (Live Margin Balance)">
+        <span class="stat-label">Futures Wallet (Live)</span>
+        <span class="stat-value" id="nav_inr_wallet_val" style="color:var(--neon-green)">₹0.00</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Win Rate</span>
+        <span class="stat-value" id="nav_winrate_val">0.0% (0 trades)</span>
+      </div>
+    </div>
+
+    <!-- Right Actions & System Status -->
+    <div class="nav-actions">
+      <!-- Neumorphic Theme Switcher (Light Mode Default) -->
+      <button class="theme-toggle-btn" id="btn_toggle_theme" title="Toggle Neumorphic Theme">
+        <span id="theme_icon">☀️</span> <span id="theme_text">Light</span>
+      </button>
+
+      <button class="autopilot-pill" id="btn_toggle_autopilot" title="Toggle Autonomous AI Auto-Trader">
+        <i class="pulse-dot amber" id="autopilot_dot"></i> <span id="autopilot_status_text">Auto-Pilot: OFF</span>
+      </button>
+      <button class="btn-icon" id="btn_open_copilot_drawer" title="Open AI Copilot & Quant Chat Drawer">
+        💬 AI Copilot
+      </button>
+      <button class="btn-icon" id="btn_fast_refresh" title="Instant Refresh All Market Data">
+        ⚡ Fast Refresh
+      </button>
+      <div class="status-pill" id="model_status_pill">
+        <i class="pulse-dot"></i> GPU LLM Online (Qwen 2.5)
+      </div>
+      <div class="status-pill" id="telegram_status_pill" style="cursor:pointer;" title="Telegram Bot & Live Signal Alerts Status">
+        <i class="pulse-dot" style="background:#0088cc;box-shadow:0 0 8px #0088cc;"></i> <span id="telegram_status_text">✈️ Telegram Active</span>
+      </div>
+      <button class="btn-icon" id="btn_settings" title="API Keys & Model Settings">
+        ⚙ Settings
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Terminal 3-Column Layout -->
+  <main class="terminal-container">
+    
+    <!-- Left Column: Multi-Coin Screener & Scanner -->
+    <section class="panel">
+      <div class="panel-header">
+        <span class="panel-title"><i>◈</i> Futures Screener</span>
+        <button class="btn-ai-scan" id="btn_run_scan">⚡ Scan All</button>
+      </div>
+
+      <div class="scanner-controls">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="coin_search" placeholder="Search 500+ Futures (e.g. BTC, PEPE, SOL, TRUMP)...">
+        </div>
+        <div class="scanner-filters">
+          <button class="filter-tab active" data-filter="all">ALL</button>
+          <button class="filter-tab" data-filter="calls">🟢 CALLS (BUY)</button>
+          <button class="filter-tab" data-filter="puts">🔴 PUTS (SELL)</button>
+          <button class="filter-tab" data-filter="movers">🚀 MOVERS</button>
+          <button class="filter-tab" data-filter="top">🔥 TOP PICKS</button>
+          <button class="filter-tab" data-filter="oversold">⚡ OVERSOLD</button>
+          <button class="filter-tab" data-filter="whales">🐋 DEPTH</button>
+        </div>
+        <div style="font-size:10px;color:var(--text-dim);font-family:var(--font-mono)" id="scan_progress_label">
+          Market Scanner Ready (500+ Instruments)
+        </div>
+      </div>
+
+      <!-- Coin List -->
+      <div class="coin-list" id="coin_list">
+        <!-- Rendered by scanner.js -->
+        <div style="padding: 20px; text-align: center; color: var(--text-dim); font-size: 12px;">Loading CoinDCX markets...</div>
+      </div>
+    </section>
+
+    <!-- Center Column: Active Pair Chart & Deep Intelligence -->
+    <section class="center-panel">
+      
+      <!-- Pair Header Bar -->
+      <div class="pair-header">
+        <div class="pair-info-left">
+          <span class="pair-title" id="active_pair_title">BTC/USDT</span>
+          <span class="pair-live-price" id="active_pair_price">$0.00</span>
+          <span class="pair-live-price-inr" id="active_pair_price_inr" style="font-size:14px;color:var(--neon-cyan);margin-left:8px;font-family:var(--font-mono);font-weight:600;">₹0.00</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="brand-badge" id="quant_score_badge" style="background:rgba(0,255,135,0.1);color:var(--bullish);border-color:var(--bullish)">Score: +0/100</span>
+            <span class="stat-value up" id="quant_action_label" style="font-size:12px">NEUTRAL</span>
+          </div>
+        </div>
+
+        <!-- Timeframe Selector & Fullscreen Button -->
+        <div class="timeframe-selector">
+          <button class="tf-btn" data-tf="1m">1m</button>
+          <button class="tf-btn" data-tf="5m">5m</button>
+          <button class="tf-btn" data-tf="15m">15m</button>
+          <button class="tf-btn active" data-tf="1h">1h</button>
+          <button class="tf-btn" data-tf="4h">4h</button>
+          <button class="tf-btn" data-tf="1d">1D</button>
+          <button class="btn-icon" id="btn_chart_fullscreen" style="margin-left:6px;padding:4px 9px;font-size:11px;background:rgba(2,132,199,0.15);color:var(--neon-cyan);border:1px solid rgba(2,132,199,0.3);" title="Toggle Fullscreen Chart View">⛶ Fullscreen</button>
+          <button class="btn-icon" id="btn_broadcast_telegram" style="margin-left:6px;padding:4px 10px;font-size:11px;background:rgba(0,136,204,0.18);color:#38bdf8;border:1px solid #0088cc;font-weight:700;" title="Broadcast High-Win Sure Call (Call/Put, Entry, SL, TP) for this coin directly to Telegram">✈️ Send Sure Call</button>
+        </div>
+      </div>
+
+      <!-- Candlestick Chart Area -->
+      <div class="chart-card">
+        <div id="tradingview_chart"></div>
+      </div>
+
+      <!-- Bottom Split: AI Reasoning Agent & Order Book Depth -->
+      <div class="center-bottom-split">
+        
+        <!-- AI Agent Thesis Card -->
+        <div class="ai-agent-card">
+          <div class="panel-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="ai-header-tag" id="ai_status_tag">⚡ Local GPU LLM Reasoning</span>
+            </div>
+            <button class="btn-ai-scan" id="btn_ask_ai">🧠 Ask AI to Reason</button>
+          </div>
+          <div class="ai-content" id="ai_reasoning_content">
+            <div style="color:var(--text-muted);font-style:italic;">
+              Click <strong>"Ask AI to Reason"</strong> to prompt the local LLM. It will analyze the order book whale walls, RSI divergence, Bollinger Bandwidth, and multi-EMA trends with GPU-accelerated institutional trade formulation.
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Book Depth Card -->
+        <div class="orderbook-card">
+          <div class="panel-header">
+            <span class="panel-title"><i>◈</i> Order Book Depth</span>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono)" id="ob_delta_label">Delta: +0.00</span>
+              <span style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono)" id="spread_label">Spread: 0 bps</span>
+            </div>
+          </div>
+          
+          <!-- Imbalance Meter -->
+          <div class="imbalance-gauge">
+            <span style="font-size:11px;font-weight:700;color:var(--bullish)">BIDS</span>
+            <div class="gauge-bar-wrap">
+              <div class="gauge-fill" id="imbalance_gauge_fill" style="width: 50%;"></div>
+            </div>
+            <span style="font-size:11px;font-weight:700;color:var(--bearish)">ASKS</span>
+            <span style="font-size:11px;font-family:var(--font-mono);font-weight:700;margin-left:8px;" id="imbalance_label">+0%</span>
+          </div>
+
+          <!-- Microstructure Tables -->
+          <div class="ob-table-wrap">
+            <div>
+              <div class="ob-col-header">
+                <span>Bid Price</span>
+                <span>Qty</span>
+              </div>
+              <div id="ob_bids"></div>
+            </div>
+            <div>
+              <div class="ob-col-header">
+                <span>Ask Price</span>
+                <span>Qty</span>
+              </div>
+              <div id="ob_asks"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Active Positions & Trade History Card -->
+      <div class="panel positions-card center-positions-card" id="active_positions_card">
+        <div class="panel-header" style="padding-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <!-- Navigation Tabs -->
+          <div class="pos-history-tabs" style="display:flex;align-items:center;gap:6px;">
+            <button class="pos-tab active" id="tab_active_positions" onclick="switchPosTab('active')">
+              <span>◈ Active Positions</span>
+              <span class="mode-chip-small" id="pos_tab_mode_tag" style="font-size:9.5px;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:4px;">PAPER</span>
+              <span class="pos-summary-badge" id="pos_count_badge">0 Open</span>
+            </button>
+            <button class="pos-tab" id="tab_trade_history" onclick="switchPosTab('history')">
+              <span>📜 Trade History</span>
+              <span class="mode-chip-small" id="hist_tab_mode_tag" style="font-size:9.5px;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:4px;">PAPER</span>
+              <span class="pos-summary-badge" id="history_tab_badge">0 Closed</span>
+            </button>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);" id="pos_pnl_summary">Unrealized PnL: $0.00</div>
+            <button class="btn-pos-fullview" id="btn_toggle_positions_fullview" title="Toggle Full View for Active Positions & Trade History">
+              <span id="fullview_pos_icon">⛶</span> <span id="fullview_pos_text">Full View</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- View 1: Active Positions View -->
+        <div id="view_active_positions" style="flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;">
+          <div class="positions-list" id="positions_list">
+            <div style="text-align:center;padding:16px;color:var(--text-dim);font-size:12px;">No active futures positions</div>
+          </div>
+        </div>
+
+        <!-- View 2: Trade History with Profit / Loss Counts -->
+        <div id="view_trade_history" style="display:none;flex:1;min-height:0;flex-direction:column;overflow:hidden;">
+          <!-- Profit / Loss Metrics Ribbon -->
+          <div class="history-metrics-ribbon">
+            <div class="history-stat-badge win">
+              <span class="stat-dot win"></span>
+              <span class="hist-label">Wins:</span>
+              <strong id="history_wins_count">0</strong>
+            </div>
+            <div class="history-stat-badge loss">
+              <span class="stat-dot loss"></span>
+              <span class="hist-label">Losses:</span>
+              <strong id="history_losses_count">0</strong>
+            </div>
+            <div class="history-stat-badge neutral">
+              <span class="hist-label">Win Rate:</span>
+              <strong id="history_winrate">0.0%</strong>
+            </div>
+            <div class="history-stat-badge pnl" id="history_pnl_badge">
+              <span class="hist-label">Net Realized PnL:</span>
+              <strong id="history_realized_pnl">₹0.00</strong>
+            </div>
+          </div>
+
+          <!-- Trade History Items List -->
+          <div class="trade-history-list" id="trade_history_list">
+            <div style="text-align:center;padding:16px;color:var(--text-dim);font-size:12px;">No closed trades yet</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Column: Trade Management & Position Execution -->
+    <section class="right-panel">
+      
+      <!-- Account & Order Entry Card -->
+      <div class="panel account-card">
+        <div class="acc-header">
+          <span class="panel-title"><i>◈</i> Trade Management</span>
+          <span class="mode-badge mode-paper" id="trading_mode_badge">PAPER TRADING</span>
+        </div>
+
+        <!-- Trading Currency Selector Bar -->
+        <div class="trading-currency-bar" style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;padding:8px 10px;background:var(--bg-surface);border:var(--nm-border);border-radius:8px;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">Margin Currency:</span>
+            <div class="currency-pills" style="display:flex;gap:4px;">
+              <button type="button" class="curr-pill active" id="btn_curr_inr" data-curr="INR">₹ INR</button>
+              <button type="button" class="curr-pill" id="btn_curr_usdt" data-curr="USDT">$ USDT</button>
+            </div>
+          </div>
+          <button type="button" id="btn_open_all_balances" class="btn-all-balances" title="View all currency balances in CoinDCX">
+            <span>💼 Balances</span>
+          </button>
+        </div>
+
+        <!-- Available Balance for Chosen Currency -->
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:2px 4px;margin-bottom:8px;font-family:var(--font-mono);">
+          <span style="color:var(--text-muted)">Avail for Trade (<span id="selected_currency_name">INR</span>):</span>
+          <strong id="selected_currency_avail" style="color:var(--neon-green)">₹10,00,000.00</strong>
+        </div>
+
+        <!-- Balances Grid -->
+        <div class="balance-grid">
+          <div class="balance-box">
+            <div class="balance-title">Account Balance</div>
+            <div class="balance-num" id="acc_balance">₹10,00,000.00</div>
+          </div>
+          <div class="balance-box">
+            <div class="balance-title">Free Margin</div>
+            <div class="balance-num" id="acc_free_margin" style="color:var(--neon-green)">₹10,00,000.00</div>
+          </div>
+          <div class="balance-box">
+            <div class="balance-title">Used Margin</div>
+            <div class="balance-num" id="acc_used_margin">₹0.00</div>
+          </div>
+          <div class="balance-box" style="display:flex;align-items:center;justify-content:center;">
+            <button class="btn-icon" id="btn_reset_paper" style="font-size:11px;padding:6px 10px;background:rgba(239,68,68,0.12);color:var(--bearish);border:1px solid rgba(239,68,68,0.25);" title="Reset entire portfolio, trade history, open positions, and logs to 0 (Fresh Start)">↺ Reset to 0</button>
+          </div>
+        </div>
+
+        <!-- Order Entry Form -->
+        <div class="order-form">
+          <!-- Side Selector -->
+          <div class="side-toggle">
+            <button class="side-btn buy active" id="btn_side_buy">BUY / LONG</button>
+            <button class="side-btn sell" id="btn_side_sell">SELL / SHORT</button>
+          </div>
+
+          <!-- Quantity & Sizing Quick Chips -->
+          <div class="input-group">
+            <div class="input-label" style="display:flex;justify-content:space-between;align-items:center;">
+              <span>Order Quantity</span>
+              <span style="color:var(--text-dim)">Units</span>
+            </div>
+            <div class="input-field-wrap">
+              <input type="number" id="order_qty_input" step="any" value="0.05" placeholder="0.00">
+              <span class="input-unit">QTY</span>
+            </div>
+            <!-- Sizing Percentage Chips -->
+            <div class="quick-chips-row" style="display:flex;gap:4px;margin-top:6px;">
+              <button type="button" class="btn-chip" data-size-pct="10">10%</button>
+              <button type="button" class="btn-chip" data-size-pct="25">25%</button>
+              <button type="button" class="btn-chip" data-size-pct="50">50%</button>
+              <button type="button" class="btn-chip" data-size-pct="75">75%</button>
+              <button type="button" class="btn-chip" data-size-pct="100">MAX</button>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="input-group">
+            <label class="input-label">
+              <span>Limit / Target Price</span>
+              <span style="color:var(--text-dim)">Market if empty</span>
+            </label>
+            <div class="input-field-wrap">
+              <input type="number" id="order_price_input" step="any" placeholder="Current Market">
+              <span class="input-unit">USDT</span>
+            </div>
+          </div>
+
+          <!-- Leverage Slider -->
+          <div class="input-group">
+            <div class="input-label">
+              <span>Isolated Leverage</span>
+              <span class="leverage-badge" id="leverage_val">5x</span>
+            </div>
+            <div class="slider-wrap">
+              <span style="font-size:10px;color:var(--text-dim)">1x</span>
+              <input type="range" id="leverage_slider" min="1" max="20" value="5">
+              <span style="font-size:10px;color:var(--text-dim)">20x</span>
+            </div>
+          </div>
+
+          <!-- Stop Loss & Take Profit with Quick Chips -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div class="input-group">
+              <div class="input-label" style="display:flex;justify-content:space-between;align-items:center;">
+                <span>Stop Loss</span>
+              </div>
+              <div class="input-field-wrap">
+                <input type="number" id="order_sl_input" step="any" placeholder="Optional">
+              </div>
+              <div class="quick-chips-row" style="display:flex;gap:3px;margin-top:4px;">
+                <button type="button" class="btn-chip sl-chip" data-sl-pct="1">-1%</button>
+                <button type="button" class="btn-chip sl-chip" data-sl-pct="2">-2%</button>
+                <button type="button" class="btn-chip sl-chip" data-sl-pct="3">-3%</button>
+                <button type="button" class="btn-chip sl-chip" data-sl-pct="5">-5%</button>
+              </div>
+            </div>
+            <div class="input-group">
+              <div class="input-label" style="display:flex;justify-content:space-between;align-items:center;">
+                <span>Take Profit</span>
+              </div>
+              <div class="input-field-wrap">
+                <input type="number" id="order_tp_input" step="any" placeholder="Optional">
+              </div>
+              <div class="quick-chips-row" style="display:flex;gap:3px;margin-top:4px;">
+                <button type="button" class="btn-chip tp-chip" data-tp-pct="1.5">+1.5%</button>
+                <button type="button" class="btn-chip tp-chip" data-tp-pct="3">+3%</button>
+                <button type="button" class="btn-chip tp-chip" data-tp-pct="5">+5%</button>
+                <button type="button" class="btn-chip tp-chip" data-tp-pct="10">+10%</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- In-Profit Trailing Stop Loss Module -->
+          <div class="trailing-sl-module" style="background:rgba(0, 240, 255, 0.04);border:1px solid rgba(0, 240, 255, 0.25);border-radius:8px;padding:10px;margin:6px 0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;font-weight:700;color:var(--neon-cyan);">
+                <input type="checkbox" id="order_trailing_sl_check" checked style="accent-color:var(--neon-cyan);width:16px;height:16px;cursor:pointer;">
+                <span>🎯 In-Profit Trailing Stop Loss</span>
+              </label>
+              <span style="font-size:10px;font-weight:700;color:var(--neon-green);background:rgba(0,255,135,0.12);padding:2px 6px;border-radius:4px;border:1px solid rgba(0,255,135,0.3);">Zero-Loss Lock</span>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-dim);margin:4px 0 6px 0;line-height:1.4;">
+              Locks breakeven at <strong>+0.8% profit</strong>, then trails behind peak price to lock in maximum profit.
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+              <span style="font-size:10.5px;color:var(--text-muted);font-weight:600;">Trail Distance:</span>
+              <div class="trailing-offset-pills" style="display:flex;gap:4px;">
+                <button type="button" class="btn-offset-pill" data-offset="0.5">0.5%</button>
+                <button type="button" class="btn-offset-pill active" data-offset="0.8">0.8%</button>
+                <button type="button" class="btn-offset-pill" data-offset="1.0">1.0%</button>
+                <button type="button" class="btn-offset-pill" data-offset="1.5">1.5%</button>
+              </div>
+              <input type="hidden" id="order_trailing_offset" value="0.8">
+            </div>
+          </div>
+
+          <!-- Estimated Required Margin Display -->
+          <div id="order_margin_estimate" style="font-size:11px;color:var(--neon-green);font-family:var(--font-mono);padding:4px 2px;display:flex;justify-content:space-between;align-items:center;">
+            <span>Est. Required Margin:</span>
+            <strong id="est_margin_val">₹0.00</strong>
+          </div>
+
+          <!-- Order Execution Button -->
+          <button class="btn-execute-order" id="btn_submit_order">⚡ Execute BUY (5x)</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings Modal Overlay -->
+  <div class="modal-overlay" id="settings_modal" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">⚙ Terminal Settings & API Keys</span>
+        <button class="modal-close" id="close_settings_modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="input-group">
+          <label class="input-label">CoinDCX API Key</label>
+          <div class="input-field-wrap">
+            <input type="password" id="cfg_coindcx_key" placeholder="Enter CoinDCX API Key">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">CoinDCX Secret Key</label>
+          <div class="input-field-wrap">
+            <input type="password" id="cfg_coindcx_secret" placeholder="Enter CoinDCX Secret Key">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin:8px 0;">
+          <button type="button" class="btn-ai-scan" id="btn_test_api_key" style="flex:1;justify-content:center;padding:8px 12px;font-size:12px;background:rgba(0, 240, 255, 0.12);border:1px solid var(--neon-cyan);color:var(--neon-cyan);">
+            🔑 Test API Connection & Fetch Account Data
+          </button>
+        </div>
+
+        <!-- API Connection Diagnostic Card -->
+        <div id="api_test_feedback" style="display:none;margin-bottom:12px;padding:12px;border-radius:6px;font-size:12px;line-height:1.5;background:rgba(0,0,0,0.25);border:1px solid var(--border-subtle);">
+          <div id="api_test_status" style="font-weight:700;margin-bottom:6px;"></div>
+          <div id="api_test_details" style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);"></div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Active Local LLM Model (models/)</label>
+          <select id="cfg_model_select" style="background:#0c1017;color:#fff;border:1px solid var(--border-subtle);padding:8px;border-radius:6px;font-family:var(--font-mono);font-size:12px;">
+            <option value="qwen2.5-0.5b-instruct-q4_k_m.gguf">Qwen 2.5 0.5B (Fast, GPU VRAM optimized)</option>
+          </select>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;">
+          <input type="checkbox" id="cfg_live_mode" style="width:16px;height:16px;accent-color:var(--bearish);">
+          <label for="cfg_live_mode" style="font-size:13px;font-weight:600;color:var(--bearish);">
+            Enable Real Live Order Execution (Default is Paper Trading)
+          </label>
+        </div>
+
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">
+          * Note: Live orders execute with INR margin directly from your CoinDCX wallet. Dynamic balance compounding sizes each position as a percentage of your live balance to maximize profits safely.
+        </div>
+
+        <!-- Telegram Bot & Sure Call Alerts Section -->
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border-subtle);">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+            <span style="font-size:15px;">✈️</span>
+            <span style="font-size:13px;font-weight:700;color:#38bdf8;">Telegram Bot & Sure Calls Integration</span>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Telegram Bot Token</label>
+            <div class="input-field-wrap">
+              <input type="password" id="cfg_telegram_bot_token" placeholder="Enter Bot Token (e.g. 8249092590:AAH66Fgi5Q8s9B09NH5DQxfJ3vE9-QwJgcI)">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Telegram Chat ID</label>
+            <div class="input-field-wrap">
+              <input type="text" id="cfg_telegram_chat_id" placeholder="Enter Chat ID (e.g. 621591854)">
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin:8px 0;">
+            <button type="button" class="btn-ai-scan" id="btn_test_telegram" style="flex:1;justify-content:center;padding:8px 12px;font-size:12px;background:rgba(0, 136, 204, 0.15);border:1px solid #0088cc;color:#38bdf8;">
+              ✈️ Test Telegram Connection & Send Verification
+            </button>
+          </div>
+
+          <!-- Telegram Diagnostic Card -->
+          <div id="telegram_test_feedback" style="display:none;margin-bottom:12px;padding:12px;border-radius:6px;font-size:12px;line-height:1.5;background:rgba(0,0,0,0.25);border:1px solid var(--border-subtle);">
+            <div id="telegram_test_status" style="font-weight:700;margin-bottom:6px;"></div>
+            <div id="telegram_test_details" style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);"></div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;padding:6px 0;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-main);cursor:pointer;">
+              <input type="checkbox" id="cfg_telegram_enabled" style="accent-color:#0088cc;" checked>
+              <span>Enable Real-Time Telegram Alerts</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-main);cursor:pointer;">
+              <input type="checkbox" id="cfg_telegram_signals" style="accent-color:#0088cc;" checked>
+              <span>Broadcast Sure Calls (Call/Put, Entry, Exit, SL, TP1-3, Confluence %)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-main);cursor:pointer;">
+              <input type="checkbox" id="cfg_telegram_trades" style="accent-color:#0088cc;" checked>
+              <span>Send Trade Executions, Target Hits (Realized ₹ PnL) & Stop-Loss Alerts</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn-ai-scan" id="btn_save_settings" style="width:100%;justify-content:center;padding:10px;margin-top:12px;">
+          Save & Apply Configuration
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Currency Balances Modal -->
+  <div class="modal-overlay" id="all_balances_modal" style="display:none;">
+    <div class="modal-box" style="width:580px;">
+      <div class="modal-header">
+        <span class="modal-title">💰 CoinDCX Multi-Currency Wallet Balances</span>
+        <button class="modal-close" id="close_balances_modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#1e293b;border-radius:8px;border:1px solid #334155;">
+          <div>
+            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;font-weight:700;">Total Portfolio Value</div>
+            <div id="modal_total_portfolio_inr" style="font-size:18px;font-weight:800;color:var(--neon-green);font-family:var(--font-mono);">₹10,00,000.00</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;font-weight:700;">USD Equivalent</div>
+            <div id="modal_total_portfolio_usdt" style="font-size:15px;font-weight:700;color:#38bdf8;font-family:var(--font-mono);">$10,000.00</div>
+          </div>
+        </div>
+
+        <div style="font-size:11.5px;color:#cbd5e1;font-weight:600;margin-top:4px;">Available Balances & Trading Assets:</div>
+        
+        <div id="modal_balances_list" style="display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto;padding-right:4px;">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <div style="font-size:11px;color:#64748b;line-height:1.4;margin-top:4px;">
+          Select any available currency in Trade Management to execute futures positions with that currency's margin.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Copilot Quick Button -->
+  <button class="floating-copilot-btn" id="btn_floating_copilot" title="Open AI Copilot & Mistake Memory">
+    <span>🤖</span>
+    <span>AI Copilot & Memory</span>
+    <span class="badge-new" id="drawer_mistake_badge">3 Lessons</span>
+  </button>
+
+  <!-- Side Popup / Drawer AI Chat, Self-Learning Strategies & Mistake Memory -->
+  <aside class="copilot-side-drawer" id="copilot_side_drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <span>⚡</span>
+        <span>AI Copilot & Self-Learning Memory</span>
+      </div>
+      <button class="drawer-close" id="btn_close_copilot_drawer" title="Close Side Chat">&times;</button>
+    </div>
+
+    <!-- Quick Stats Bar inside Drawer -->
+    <div class="drawer-stats-bar">
+      <div class="stat-item">
+        <span class="stat-label">Auto-Pilot:</span>
+        <span id="drawer_autopilot_state" class="stat-val">OFF</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Mistakes Avoided:</span>
+        <span id="drawer_mistakes_avoided_count" class="stat-val val-green">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Adaptations:</span>
+        <span id="drawer_lessons_count" class="stat-val val-amber">4</span>
+      </div>
+    </div>
+
+    <!-- Drawer Navigation Tabs -->
+    <div style="display:flex;gap:6px;padding:6px 12px;border-bottom:1px solid var(--border-subtle);background:rgba(0,0,0,0.15);">
+      <button class="drawer-tab active" id="tab_drawer_chat" style="flex:1;padding:6px 4px;font-size:11px;font-weight:700;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-card);color:var(--text-main);cursor:pointer;">💬 Chat & Scan</button>
+      <button class="drawer-tab" id="tab_drawer_strategies" style="flex:1;padding:6px 4px;font-size:11px;font-weight:700;border:1px solid var(--border-subtle);border-radius:4px;background:transparent;color:var(--text-dim);cursor:pointer;">🧠 Strategies</button>
+      <button class="drawer-tab" id="tab_drawer_mistakes" style="flex:1;padding:6px 4px;font-size:11px;font-weight:700;border:1px solid var(--border-subtle);border-radius:4px;background:transparent;color:var(--text-dim);cursor:pointer;">🛡️ Mistake Rules</button>
+    </div>
+
+    <!-- View 1: Chat & Scan -->
+    <div id="view_drawer_chat" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+      <!-- Active Pair & Quick Context Strip -->
+      <div class="drawer-action-strip">
+        <span class="drawer-pair-title" id="drawer_active_pair">BTC/USDT</span>
+        <button id="btn_drawer_scan_candle" class="btn-ai-scan" style="font-size:11px;padding:4px 10px;">
+          🕯 Scan Candle & Decide
+        </button>
+      </div>
+
+      <!-- Quick AI Command Chips -->
+      <div class="quick-chips-row">
+        <button class="quick-chip" data-prompt="Track the live candlestick price action and wicks for this coin. Is there an immediate quick profit scalping opportunity to take fast gains and avoid big losses? Provide entry, tight stop loss, and fast profit target.">⚡ Quick Scalp</button>
+        <button class="quick-chip" data-prompt="Scan the current candlestick structure, trend, and indicators. Should we BUY, SELL, or HOLD right now? Formulate the optimal trade setup.">🕯 Candle Scan</button>
+        <button class="quick-chip" data-prompt="Analyze the order book bid/ask walls, whale liquidity clusters, and order imbalance for this coin.">🌊 Whale Walls</button>
+        <button class="quick-chip" data-prompt="List all recent mistakes and losses you have memorized, and explain how you are avoiding them in current market setups.">🧠 Mistake Memory</button>
+        <button class="quick-chip" data-prompt="Calculate optimal isolated leverage, stop loss, and risk-reward ratio for maximum profit.">🎯 Profit Math</button>
+      </div>
+
+      <!-- Messages Container -->
+      <div class="chat-messages" id="copilot_messages">
+        <div class="chat-bubble ai">
+          <div class="bubble-title">⚡ Self-Learning Quant AI Ready</div>
+          I run offline on your local GPU (Qwen 2.5). I synthesize orderbook delta flow, monitor dynamic trailing stop-loss in profit, and self-improve our strategies after every trade so we never repeat past mistakes.<br/><br/>
+          Click <strong>"🕯 Scan Candle & Decide"</strong> above or ask any question!
+        </div>
+      </div>
+
+      <!-- Input Footer -->
+      <div class="chat-input-row">
+        <input type="text" id="copilot_input" placeholder="Ask AI to scan candles, calculate trade or explain lessons...">
+        <button class="btn-send-chat" id="btn_copilot_send">Send</button>
+      </div>
+    </div>
+
+    <!-- View 2: Self-Improved Strategies -->
+    <div id="view_drawer_strategies" style="display:none;flex-direction:column;flex:1;overflow-y:auto;padding:12px;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;font-weight:700;color:var(--text-bright);">Adaptive Institutional Strategies</span>
+        <button id="btn_synthesize_strategies" class="btn-ai-scan" style="font-size:10px;padding:3px 8px;">⚡ AI Synthesize</button>
+      </div>
+      <div id="strategies_list_container" style="display:flex;flex-direction:column;gap:8px;">
+        <!-- Filled dynamically -->
+      </div>
+      <!-- Compounding Balance Box -->
+      <div style="background:rgba(0, 240, 255, 0.05);border:1px solid rgba(0, 240, 255, 0.2);border-radius:6px;padding:10px;font-size:11px;line-height:1.5;">
+        <div style="font-weight:700;color:var(--neon-cyan);margin-bottom:4px;">📈 Dynamic Balance Compounding</div>
+        Position sizing automatically scales as 15% of your available balance. As profits accumulate from trailing stop exits, subsequent trades automatically allocate larger size to compound profits!
+      </div>
+    </div>
+
+    <!-- View 3: Mistake Memory Rules -->
+    <div id="view_drawer_mistakes" style="display:none;flex-direction:column;flex:1;overflow-y:auto;padding:12px;gap:10px;">
+      <div style="font-size:12px;font-weight:700;color:var(--text-bright);">Self-Correction & Mistake Rules</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">
+        Rules automatically formulated after trade autopsies to prevent entering traps:
+      </div>
+      <div id="mistakes_list_container" style="display:flex;flex-direction:column;gap:8px;">
+        <!-- Filled dynamically -->
+      </div>
+    </div>
+  </aside>
+
+  <!-- Scripts -->
+  <script src="/static/js/chart.js?v=16"></script>
+  <script src="/static/js/orderbook.js?v=16"></script>
+  <script src="/static/js/scanner.js?v=16"></script>
+  <script src="/static/js/app.js?v=17"></script>
+</body>
+</html>
